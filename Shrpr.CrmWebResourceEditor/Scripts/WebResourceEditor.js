@@ -30,7 +30,7 @@ Shrpr.Editor = {
         return window.opener.Xrm.Page.context.getQueryStringParameters()['id'].replace("{", "").replace("}", "");
     },
     isEditable: function () {
-        return window.opener.Xrm.Page.context.getQueryStringParameters()['Data'] == "Editable";
+        return GetGlobalContext().getQueryStringParameters()['Data'] == "Editable";
     },
     /// <param name="onResourceLoaded" type="function" >
     ///1: callback-a function that is called when the WebResource is loaded
