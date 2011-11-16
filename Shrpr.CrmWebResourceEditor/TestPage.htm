@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Test Page</title>
+ <script src="Scripts/PageData.js" type="text/javascript"></script>
+ <script src="Scripts/XrmPageTemplate.js" type="text/javascript"></script>
+ <script src="Scripts/My.Library.js" type="text/javascript"></script>
+
+ <script type="text/javascript">
+  onload = function ()
+  {
+
+   //  Test your functions here:
+
+   //Query the page:
+   writeMessage("Current Control: " + Xrm.Page.ui.getCurrentControl().getName());
+   
+   // Test a function in your library:
+   My.Library.saveRecordExampleFunction();
+   // Add a function to an event
+   Xrm.Page.data.entity.addOnSave(My.Library.closeFormExampleFunction);
+
+
+  }
+
+  //Helper function to write data to this page:
+  function writeMessage(message)
+  {
+   var ol = document.getElementById("results");
+   var li = document.createElement("li");
+   li.innerText = message;
+   ol.appendChild(li);
+  }
+
+ </script>
+</head>
+<body>
+<p>This code is running on the Xrm.Page object defined by XrmPageTemplate.js.</p>
+<p>It is using the data for the form captured in PageData.js.</p>
+<ol id="results"></ol>
+</body>
+</html>
+
+

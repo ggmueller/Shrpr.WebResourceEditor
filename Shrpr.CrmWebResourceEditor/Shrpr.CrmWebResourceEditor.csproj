@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{38DA0CA8-B013-4EA3-8B3B-2326893E6FF4}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Shrpr.CrmWebResourceEditor</RootNamespace>
+    <AssemblyName>Shrpr.CrmWebResourceEditor</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\base64\base64.js" />
+    <Content Include="Scripts\embeddededitor.css" />
+    <Content Include="Scripts\htmlStyles.css" />
+    <Content Include="Scripts\images\Shrpr_WRE_Logo.png" />
+    <Content Include="Scripts\images\WRE_Icon.png" />
+    <Content Include="Scripts\jquery_ui\css\dark_hive\images\ui_bg_flat_30_cccccc_40x100.png" />
+    <Content Include="Scripts\jquery_ui\css\dark_hive\images\ui_bg_flat_50_5c5c5c_40x100.png" />
+    <Content Include="Scripts\jquery_ui\css\dark_hive\images\ui_bg_glass_40_ffc73d_1x400.png" />
+    <Content Include="Scripts\jquery_ui\css\dark_hive\images\ui_bg_highlight_hard_20_0972a5_1x100.png" />
+    <Content Include="Scripts\jquery_ui\css\dark_hive\images\ui_bg_highlight_soft_33_003147_1x100.png" />
+    <Content Include="Scripts\jquery_ui\css\dark_hive\images\ui_bg_highlight_soft_35_222222_1x100.png" />
+    <Content Include="Scripts\jquery_ui\css\dark_hive\images\ui_bg_highlight_soft_44_444444_1x100.png" />
+    <Content Include="Scripts\jquery_ui\css\dark_hive\images\ui_bg_highlight_soft_80_eeeeee_1x100.png" />
+    <Content Include="Scripts\jquery_ui\css\dark_hive\images\ui_bg_loop_25_000000_21x21.png" />
+    <Content Include="Scripts\jquery_ui\css\dark_hive\images\ui_icons_222222_256x240.png" />
+    <Content Include="Scripts\jquery_ui\css\dark_hive\images\ui_icons_4b8e0b_256x240.png" />
+    <Content Include="Scripts\jquery_ui\css\dark_hive\images\ui_icons_a83300_256x240.png" />
+    <Content Include="Scripts\jquery_ui\css\dark_hive\images\ui_icons_cccccc_256x240.png" />
+    <Content Include="Scripts\jquery_ui\css\dark_hive\images\ui_icons_ffffff_256x240.png" />
+    <Content Include="Scripts\jquery_ui\css\dark_hive\jquery_ui_1.8.16.custom.css" />
+    <Content Include="Scripts\jquery_ui\js\jquery_ui_1.8.16.custom.min.js" />
+    <Content Include="Scripts\jquery_1.7.js" />
+    <Content Include="Scripts\orion\editor\contentAssist.js" />
+    <Content Include="Scripts\orion\editor\editor.js" />
+    <Content Include="Scripts\orion\editor\editorFeatures.js" />
+    <Content Include="Scripts\orion\editor\htmlGrammar.js" />
+    <Content Include="Scripts\orion\editor\textMateStyler.js" />
+    <Content Include="Scripts\orion\editor\webContentAssist.js" />
+    <Content Include="Scripts\orion\textstyler.css" />
+    <Content Include="Scripts\orion\textview\annotations.css" />
+    <Content Include="Scripts\orion\textview\annotations.js" />
+    <Content Include="Scripts\orion\textview\images\bookmark.gif" />
+    <Content Include="Scripts\orion\textview\images\breakpoint.gif" />
+    <Content Include="Scripts\orion\textview\images\collapsed.png" />
+    <Content Include="Scripts\orion\textview\images\error.gif" />
+    <Content Include="Scripts\orion\textview\images\expanded.png" />
+    <Content Include="Scripts\orion\textview\images\multiple.gif" />
+    <Content Include="Scripts\orion\textview\images\plus.png" />
+    <Content Include="Scripts\orion\textview\images\squiggly_error.png" />
+    <Content Include="Scripts\orion\textview\images\squiggly_warning.png" />
+    <Content Include="Scripts\orion\textview\images\task.gif" />
+    <Content Include="Scripts\orion\textview\images\warning.gif" />
+    <Content Include="Scripts\orion\textview\images\white_space.png" />
+    <Content Include="Scripts\orion\textview\images\white_tab.png" />
+    <Content Include="Scripts\orion\textview\keyBinding.js" />
+    <Content Include="Scripts\orion\textview\projectionTextModel.js" />
+    <Content Include="Scripts\orion\textview\rulers.css" />
+    <Content Include="Scripts\orion\textview\rulers.js" />
+    <Content Include="Scripts\orion\textview\textModel.js" />
+    <Content Include="Scripts\orion\textview\textview.css" />
+    <Content Include="Scripts\orion\textview\textView.js" />
+    <Content Include="Scripts\orion\textview\tooltip.css" />
+    <Content Include="Scripts\orion\textview\tooltip.js" />
+    <Content Include="Scripts\orion\textview\undoStack.js" />
+    <Content Include="Scripts\PageData.js" />
+    <Content Include="Scripts\Shrpr.Common.js" />
+    <Content Include="Scripts\TextStyler.js" />
+    <Content Include="Scripts\WebResourceEditor.htm" />
+    <Content Include="Scripts\WebResourceEditor.js" />
+    <Content Include="Scripts\XrmPageTemplate.js" />
+    <Content Include="TestPage.htm" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>1947</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
