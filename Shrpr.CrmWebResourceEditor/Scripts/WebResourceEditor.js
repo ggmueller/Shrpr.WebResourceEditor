@@ -195,6 +195,7 @@ Shrpr.Editor = {
         }
 
         var initialContent = base64.decode(webResource.Content);
+        initialContent = initialContent.replace("ï»¿", ""); // Remove ByteOrder Mark
         editor.onInputChange(contentName, null, initialContent);
         syntaxHighlighter.highlight(contentName, editor);
         // end of code to run when content changes.
