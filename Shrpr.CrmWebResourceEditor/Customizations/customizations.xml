@@ -33,7 +33,7 @@
         <DisplayRules />
         <Actions>
           <Url Address="WebResources/shrpr_/WebResourceEditor/WebResourceEditor.htm" PassParams="false" WinMode="0" WinParams="">
-            <BoolParameter Name="IsEditable" Value="1"/>
+            <StringParameter Name="Data" Value="Editable"/>
           </Url>
         </Actions>
       </CommandDefinition>
@@ -44,7 +44,7 @@
         <DisplayRules />
         <Actions>
           <Url Address="WebResources/shrpr_/WebResourceEditor/WebResourceEditor.htm" PassParams="false" WinMode="0" WinParams="">
-            <BoolParameter Name="IsEditable" Value="0"/>
+            <StringParameter Name="Data" Value="Viewable"/>
           </Url>
         </Actions>
       </CommandDefinition>
@@ -68,7 +68,7 @@
       </LocLabel>
       <LocLabel Id="Shrpr.WRE.ViewLabel">
         <Titles>
-          <Title languagecode="1033" description="Edit in WRE" />
+          <Title languagecode="1033" description="View in WRE" />
         </Titles>
       </LocLabel>
     </LocLabels>

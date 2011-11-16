@@ -24,54 +24,57 @@
 var Shrpr = shrpr_registerNS("Shrpr");
 
 Shrpr.Editor = {
-    __editor: { },
+    __editor: {},
 
-    getWrId: function() {
+    getWrId: function () {
         return window.opener.Xrm.Page.context.getQueryStringParameters()['id'].replace("{", "").replace("}", "");
+    },
+    isEditable: function () {
+        return window.opener.Xrm.Page.context.getQueryStringParameters()['Data'] == "Editable";
     },
     /// <param name="onResourceLoaded" type="function" >
     ///1: callback-a function that is called when the WebResource is loaded
     ///</param>
     loadWebResource:
-        function(onResourceLoaded) {
+        function (onResourceLoaded) {
             var context = GetGlobalContext();
             var wrId = Shrpr.Editor.getWrId();
             //Asynchronous AJAX function to Retrieve a CRM record using OData
             $.ajax({
-                    type: "GET",
-                    contentType: "application/json; charset=utf-8",
-                    datatype: "json",
-                    url: context.getServerUrl() + Shrpr.Editor.ODATA_ENDPOINT + "/WebResourceSet(guid'" + wrId + "')",
-                    beforeSend: function(xmlHttpRequest) {
-                        //Specifying this header ensures that the results will be returned as JSON.             
-                        xmlHttpRequest.setRequestHeader("Accept", "application/json");
-                    },
-                    success: function(data, textStatus, xmlHttpRequest) {
-                        onResourceLoaded(data.d);
-                        Shrpr.Editor.createEditor(data.d);
-                    },
-                    error: function(xmlHttpRequest, textStatus, errorThrown) {
-                        alert(textStatus + ": " + errorThrown);
-                    }
-                });
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                datatype: "json",
+                url: context.getServerUrl() + Shrpr.Editor.ODATA_ENDPOINT + "/WebResourceSet(guid'" + wrId + "')",
+                beforeSend: function (xmlHttpRequest) {
+                    //Specifying this header ensures that the results will be returned as JSON.             
+                    xmlHttpRequest.setRequestHeader("Accept", "application/json");
+                },
+                success: function (data, textStatus, xmlHttpRequest) {
+                    onResourceLoaded(data.d);
+                    Shrpr.Editor.createEditor(data.d);
+                },
+                error: function (xmlHttpRequest, textStatus, errorThrown) {
+                    alert(textStatus + ": " + errorThrown);
+                }
+            });
 
         },
-    createEditor: function(webResource) {
+    createEditor: function (webResource) {
         var editorDomNode = document.getElementById("editor");
 
-        var textViewFactory = function() {
+        var textViewFactory = function () {
             return new orion.textview.TextView({
-                    parent: editorDomNode,
-                    stylesheet: ["orion/textview/textview.css",
+                parent: editorDomNode,
+                stylesheet: ["orion/textview/textview.css",
                         "orion/textview/rulers.css",
                         "orion/textview/annotations.css",
                         "orion/textstyler.css",
                         "htmlStyles.css"],
-                    tabSize: 4
-                });
+                tabSize: 4
+            });
         };
 
-        var contentAssistFactory = function(editor) {
+        var contentAssistFactory = function (editor) {
             var contentAssist = new orion.editor.ContentAssist(editor, "contentassist");
             contentAssist.addProvider(new orion.editor.CssContentAssistProvider(), "css", "\\.css$");
             contentAssist.addProvider(new orion.editor.JavaScriptContentAssistProvider(), "js", "\\.js$");
@@ -82,7 +85,7 @@ Shrpr.Editor = {
         var syntaxHighlighter = {
             styler: null,
 
-            highlight: function(fileName, editor) {
+            highlight: function (fileName, editor) {
                 if (this.styler) {
                     this.styler.destroy();
                     this.styler = null;
@@ -94,14 +97,14 @@ Shrpr.Editor = {
                     var annotationModel = editor.getAnnotationModel();
                     if (splits.length > 0) {
                         switch (extension) {
-                        case "js":
-                        case "css":
-                            this.styler = new examples.textview.TextStyler(textView, extension, annotationModel);
-                            break;
-                        case "html":
-                        case "htm":
-                            this.styler = new orion.editor.TextMateStyler(textView, orion.editor.HtmlGrammar.grammar);
-                            break;
+                            case "js":
+                            case "css":
+                                this.styler = new examples.textview.TextStyler(textView, extension, annotationModel);
+                                break;
+                            case "html":
+                            case "htm":
+                                this.styler = new orion.editor.TextMateStyler(textView, orion.editor.HtmlGrammar.grammar);
+                                break;
                         }
                     }
                 }
@@ -111,7 +114,7 @@ Shrpr.Editor = {
         var annotationFactory = new orion.editor.AnnotationFactory();
 
 
-        var keyBindingFactory = function(editor, keyModeStack, undoStack, contentAssist) {
+        var keyBindingFactory = function (editor, keyModeStack, undoStack, contentAssist) {
 
             // Create keybindings for generic editing
             var genericBindings = new orion.editor.TextActions(editor, undoStack);
@@ -123,7 +126,7 @@ Shrpr.Editor = {
 
             // save binding
             editor.getTextView().setKeyBinding(new orion.textview.KeyBinding("s", true), "save");
-            editor.getTextView().setAction("save", function() {
+            editor.getTextView().setAction("save", function () {
                 Shrpr.Editor.save();
                 return true;
             });
@@ -136,7 +139,7 @@ Shrpr.Editor = {
         var dirtyIndicator = "";
         var status = "";
 
-        var statusReporter = function(message, isError) {
+        var statusReporter = function (message, isError) {
             if (isError) {
                 status = "ERROR: " + message;
             } else {
@@ -146,19 +149,19 @@ Shrpr.Editor = {
         };
 
         Shrpr.Editor.__editor = new orion.editor.Editor({
-                textViewFactory: textViewFactory,
-                undoStackFactory: new orion.editor.UndoFactory(),
-                annotationFactory: annotationFactory,
-                lineNumberRulerFactory: new orion.editor.LineNumberRulerFactory(),
-                contentAssistFactory: contentAssistFactory,
-                keyBindingFactory: keyBindingFactory,
-                statusReporter: statusReporter,
-                domNode: editorDomNode
-            });
+            textViewFactory: textViewFactory,
+            undoStackFactory: new orion.editor.UndoFactory(),
+            annotationFactory: annotationFactory,
+            lineNumberRulerFactory: new orion.editor.LineNumberRulerFactory(),
+            contentAssistFactory: contentAssistFactory,
+            keyBindingFactory: keyBindingFactory,
+            statusReporter: statusReporter,
+            domNode: editorDomNode
+        });
 
         var editor = Shrpr.Editor.__editor;
 
-        orion.editor.util.connect(editor, "onDirtyChange", this, function(dirty) {
+        orion.editor.util.connect(editor, "onDirtyChange", this, function (dirty) {
             if (dirty) {
                 dirtyIndicator = "*";
             } else {
@@ -172,15 +175,17 @@ Shrpr.Editor = {
         var contentName = webResource.Name; // for example, a file name, something the user recognizes as the content.
         var extension = "";
         switch (webResource.WebResourceType.Value) {
-        case 1:
-            extension = "html";
-            break;
-        case 2:
-            extension = "css";
-            break;
-        case 3:
-            extension = "js";
-            break;
+            case 1:
+                extension = "html";
+                break;
+            case 2:
+                extension = "css";
+                break;
+            case 3:
+                extension = "js";
+                break;
+            default:
+                throw new Error("Only Html, Javascript and Css are supported for Shrpr.WebResourceEditor");
         }
 
         var wrExtension = contentName.split('.').pop();
@@ -195,22 +200,22 @@ Shrpr.Editor = {
         // end of code to run when content changes.
     },
 
-    save: function() {
+    save: function () {
         Shrpr.Editor.onSaving();
         Shrpr.Editor.__save(Shrpr.Editor.onSaved);
     },
 
-    saveAndPublish: function() {
+    saveAndPublish: function () {
         Shrpr.Editor.onSaveAndPublishing();
         Shrpr.Editor.__save(Shrpr.Editor.__publish);
     },
 
-    saveAndClose: function() {
+    saveAndClose: function () {
         Shrpr.Editor.onSaveAndClosing();
         Shrpr.Editor.__save(Shrpr.Editor.onSaveAndClosed);
     },
 
-    __publish: function() {
+    __publish: function () {
         var wrId = Shrpr.Editor.getWrId();
         var publishRequest = "";
         publishRequest += "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\">";
@@ -231,22 +236,22 @@ Shrpr.Editor = {
         publishRequest += "</s:Envelope>";
 
         $.ajax({
-                type: "POST",
-                contentType: "text/xml; charset=utf-8",
-                datatype: "xml",
-                data: publishRequest,
-                url: GetGlobalContext().getServerUrl() + "/XRMServices/2011/Organization.svc/web",
-                beforeSend: function(xmlHttpRequest) {
-                    xmlHttpRequest.setRequestHeader("Accept", "application/xml, text/xml, */*");
-                    xmlHttpRequest.setRequestHeader("SOAPAction", "http://schemas.microsoft.com/xrm/2011/Contracts/Services/IOrganizationService/Execute");
-                },
-                success: function(data, textStatus, XmlHttpRequest) {
-                    Shrpr.Editor.onSaveAndPublished();
-                }
-            });
+            type: "POST",
+            contentType: "text/xml; charset=utf-8",
+            datatype: "xml",
+            data: publishRequest,
+            url: GetGlobalContext().getServerUrl() + "/XRMServices/2011/Organization.svc/web",
+            beforeSend: function (xmlHttpRequest) {
+                xmlHttpRequest.setRequestHeader("Accept", "application/xml, text/xml, */*");
+                xmlHttpRequest.setRequestHeader("SOAPAction", "http://schemas.microsoft.com/xrm/2011/Contracts/Services/IOrganizationService/Execute");
+            },
+            success: function (data, textStatus, XmlHttpRequest) {
+                Shrpr.Editor.onSaveAndPublished();
+            }
+        });
     },
 
-    __save: function(onSaved) {
+    __save: function (onSaved) {
         var editor = Shrpr.Editor.__editor;
         var context = GetGlobalContext();
         ///<summary>
@@ -298,35 +303,35 @@ Shrpr.Editor = {
 
             //Asynchronous AJAX function to Update a CRM record using OData
             $.ajax({
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    datatype: "json",
-                    data: jsonEntity,
-                    url: context.getServerUrl() + Shrpr.Editor.ODATA_ENDPOINT + "/" + odataSetName + "(guid'" + id + "')",
-                    beforeSend: function(XMLHttpRequest) {
-                        //Specifying this header ensures that the results will be returned as JSON.             
-                        XMLHttpRequest.setRequestHeader("Accept", "application/json");
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                datatype: "json",
+                data: jsonEntity,
+                url: context.getServerUrl() + Shrpr.Editor.ODATA_ENDPOINT + "/" + odataSetName + "(guid'" + id + "')",
+                beforeSend: function (XMLHttpRequest) {
+                    //Specifying this header ensures that the results will be returned as JSON.             
+                    XMLHttpRequest.setRequestHeader("Accept", "application/json");
 
-                        //Specify the HTTP method MERGE to update just the changes you are submitting.             
-                        XMLHttpRequest.setRequestHeader("X-HTTP-Method", "MERGE");
-                    },
-                    success: function(data, textStatus, XmlHttpRequest) {
-                        //The MERGE does not return any data at all, so we'll add the id 
-                        //onto the data object so it can be leveraged in a Callback. When data 
-                        //is used in the callback function, the field will be named generically, "id"
-                        data = new Object();
-                        data.id = id;
-                        if (successCallback) {
-                            successCallback(data, textStatus, XmlHttpRequest);
-                        }
-                    },
-                    error: function(XmlHttpRequest, textStatus, errorThrown) {
-                        if (errorCallback)
-                            errorCallback(XmlHttpRequest, textStatus, errorThrown);
-                        else
-                            alert("Error:" + textStatus + " Detail: " + errorThrown);
+                    //Specify the HTTP method MERGE to update just the changes you are submitting.             
+                    XMLHttpRequest.setRequestHeader("X-HTTP-Method", "MERGE");
+                },
+                success: function (data, textStatus, XmlHttpRequest) {
+                    //The MERGE does not return any data at all, so we'll add the id 
+                    //onto the data object so it can be leveraged in a Callback. When data 
+                    //is used in the callback function, the field will be named generically, "id"
+                    data = new Object();
+                    data.id = id;
+                    if (successCallback) {
+                        successCallback(data, textStatus, XmlHttpRequest);
                     }
-                });
+                },
+                error: function (XmlHttpRequest, textStatus, errorThrown) {
+                    if (errorCallback)
+                        errorCallback(XmlHttpRequest, textStatus, errorThrown);
+                    else
+                        alert("Error:" + textStatus + " Detail: " + errorThrown);
+                }
+            });
 
 
         }
@@ -335,23 +340,23 @@ Shrpr.Editor = {
         var content = base64.encode(editorText);
 
         updateRecord(Shrpr.Editor.getWrId(), { Content: content }, 'WebResourceSet',
-            function(data, textStatus, xmlHttpRequest) {
+            function (data, textStatus, xmlHttpRequest) {
                 editor.onInputChange(null, null, null, true);
                 onSaved();
             }
         );
     },
-    onSaving: function() {
+    onSaving: function () {
     },
-    onSaved: function() {
+    onSaved: function () {
     },
-    onSaveAndClosing: function() {
+    onSaveAndClosing: function () {
     },
-    onSaveAndClosed: function() {
+    onSaveAndClosed: function () {
     },
-    onSaveAndPublishing: function() {
+    onSaveAndPublishing: function () {
     },
-    onSaveAndPublished: function() {
+    onSaveAndPublished: function () {
     },
     ODATA_ENDPOINT: "/XRMServices/2011/OrganizationData.svc",
     __namespace: true
