@@ -15,6 +15,11 @@
           <Button Command="Shrpr.WRE.OpenEditor" CommandType="General" Id="Shrpr.Wre.EditWebResource" Image32by32="$webresource:shrpr_/WebResourceEditor/images/WRE_Icon.png" LabelText="$LocLabels:Shrpr.WRE.EditLabel" Sequence="101" TemplateAlias="o1" />
         </CommandUIDefinition>
       </CustomAction>
+      <CustomAction Id="Shrpr.WRE.ViewCustomAction" Location="Mscrm.WebResourceEditTab.Action.Controls._children" Sequence="105">
+        <CommandUIDefinition>
+          <Button Command="Shrpr.WRE.OpenViewer" CommandType="General" Id="Shrpr.Wre.ViewWebResource" Image32by32="$webresource:shrpr_/WebResourceEditor/images/WRE_Icon.png" LabelText="$LocLabels:Shrpr.WRE.ViewLabel" Sequence="101" TemplateAlias="o1" />
+        </CommandUIDefinition>
+      </CustomAction>
     </CustomActions>
     <Templates>
       <RibbonTemplates Id="Mscrm.Templates">
@@ -23,12 +28,23 @@
     <CommandDefinitions>
       <CommandDefinition Id="Shrpr.WRE.OpenEditor">
         <EnableRules>
-          <EnableRule Id="Shrpr.WRE.EnableOnHtmlJsCss" />
+          <EnableRule Id="Mscrm.Enable.IsWebResourceCustomizableRule"/>
         </EnableRules>
         <DisplayRules />
         <Actions>
           <Url Address="WebResources/shrpr_/WebResourceEditor/WebResourceEditor.htm" PassParams="false" WinMode="0" WinParams="">
-
+            <BoolParameter Name="IsEditable" Value="1"/>
+          </Url>
+        </Actions>
+      </CommandDefinition>
+      <CommandDefinition Id="Shrpr.WRE.OpenViewer">
+        <EnableRules>
+          <EnableRule Id="Shrpr.Enable.IsWebResourceNotCustomizableRule"/>
+        </EnableRules>
+        <DisplayRules />
+        <Actions>
+          <Url Address="WebResources/shrpr_/WebResourceEditor/WebResourceEditor.htm" PassParams="false" WinMode="0" WinParams="">
+            <BoolParameter Name="IsEditable" Value="0"/>
           </Url>
         </Actions>
       </CommandDefinition>
@@ -39,17 +55,18 @@
         
       </DisplayRules>
       <EnableRules>
-        <EnableRule Id="Shrpr.WRE.EnableOnHtmlJsCss">
-          <OrRule>
-			<Or><ValueRule Field="WebResourceType" Value="1"/> </Or>
-			<Or><ValueRule Field="WebResourceType" Value="2"/> </Or>
-			<Or><ValueRule Field="WebResourceType" Value="3"/> </Or>
-		  </OrRule>
+        <EnableRule Id="Shrpr.Enable.IsWebResourceNotCustomizableRule">
+          <CustomRule FunctionName="CanCustomizeWebResource" Library="/_static/tools/webresourceeditor/scripts/webresourceeditor.js" InvertResult="true" />
         </EnableRule>
       </EnableRules>
     </RuleDefinitions>
     <LocLabels>
       <LocLabel Id="Shrpr.WRE.EditLabel">
+        <Titles>
+          <Title languagecode="1033" description="Edit in WRE" />
+        </Titles>
+      </LocLabel>
+      <LocLabel Id="Shrpr.WRE.ViewLabel">
         <Titles>
           <Title languagecode="1033" description="Edit in WRE" />
         </Titles>
