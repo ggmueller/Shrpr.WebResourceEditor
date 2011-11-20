@@ -36,7 +36,9 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Customizations\customizations.xml" />
+    <Content Include="Customizations\customizations.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Scripts\base64\base64.js" />
     <Content Include="Scripts\embeddededitor.css" />
     <Content Include="Scripts\htmlStyles.css" />
