@@ -32,13 +32,95 @@ Shrpr.Editor = {
     isEditable: function () {
         return GetGlobalContext().getQueryStringParameters()['Data'] == "Editable";
     },
+
     /// <param name="onResourceLoaded" type="function" >
     ///1: callback-a function that is called when the WebResource is loaded
     ///</param>
-    loadWebResource:
-        function (onResourceLoaded) {
-            var context = GetGlobalContext();
-            var wrId = Shrpr.Editor.getWrId();
+    loadWebResource: function (onResourceLoaded) {
+        var context = GetGlobalContext();
+        var wrId = Shrpr.Editor.getWrId();
+        Shrpr.Editor.__loadWebResourceSoap(wrId, context, onResourceLoaded);
+    },
+
+    __loadWebResourceSoap: function (webResourceId, clientContext, onResourceLoaded) {
+        function getValue(xmlNode) {
+            switch ($(xmlNode).attr("i:type")) {
+                case 'a:EntityReference':
+                    return {
+                        Id: $(xmlNode).find('a\\:Id').text(),
+                        LogicalName: $(xmlNode).find('a\\:LogicalName').text(),
+                        Name: $(xmlNode).find('a\\:Name').text()
+                    };
+                case 'a:OptionSetValue':
+                    return {
+                        Value: parseInt($(xmlNode).find('a\\:Value').text())
+                    };
+                default:
+                    return xmlNode.text();
+
+            }
+        };
+        var retrieveUnpublishedRequest = "";
+        retrieveUnpublishedRequest += "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\">";
+        retrieveUnpublishedRequest += "  <s:Body>";
+        retrieveUnpublishedRequest += "    <Execute xmlns=\"http://schemas.microsoft.com/xrm/2011/Contracts/Services\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\">";
+        retrieveUnpublishedRequest += "      <request i:type=\"c:RetrieveUnpublishedRequest\" xmlns:a=\"http://schemas.microsoft.com/xrm/2011/Contracts\" xmlns:c=\"http://schemas.microsoft.com/crm/2011/Contracts\">";
+        retrieveUnpublishedRequest += "        <a:Parameters xmlns:b=\"http://schemas.datacontract.org/2004/07/System.Collections.Generic\">";
+        retrieveUnpublishedRequest += "          <a:KeyValuePairOfstringanyType>";
+        retrieveUnpublishedRequest += "            <b:key>Target</b:key>";
+        retrieveUnpublishedRequest += "            <b:value i:type=\"a:EntityReference\">";
+        retrieveUnpublishedRequest += "              <a:Id>" + webResourceId + "</a:Id>";
+        retrieveUnpublishedRequest += "              <a:LogicalName>webresource</a:LogicalName>";
+        retrieveUnpublishedRequest += "              <a:Name i:nil=\"true\" />";
+        retrieveUnpublishedRequest += "            </b:value>";
+        retrieveUnpublishedRequest += "          </a:KeyValuePairOfstringanyType>";
+        retrieveUnpublishedRequest += "          <a:KeyValuePairOfstringanyType>";
+        retrieveUnpublishedRequest += "            <b:key>ColumnSet</b:key>";
+        retrieveUnpublishedRequest += "            <b:value i:type=\"a:ColumnSet\">";
+        retrieveUnpublishedRequest += "              <a:AllColumns>true</a:AllColumns>";
+        retrieveUnpublishedRequest += "              <a:Columns xmlns:c=\"http://schemas.microsoft.com/2003/10/Serialization/Arrays\" />";
+        retrieveUnpublishedRequest += "            </b:value>";
+        retrieveUnpublishedRequest += "          </a:KeyValuePairOfstringanyType>";
+        retrieveUnpublishedRequest += "        </a:Parameters>";
+        retrieveUnpublishedRequest += "        <a:RequestId i:nil=\"true\" />";
+        retrieveUnpublishedRequest += "        <a:RequestName>RetrieveUnpublished</a:RequestName>";
+        retrieveUnpublishedRequest += "      </request>";
+        retrieveUnpublishedRequest += "    </Execute>";
+        retrieveUnpublishedRequest += "  </s:Body>";
+        retrieveUnpublishedRequest += "</s:Envelope>";
+
+
+
+        Shrpr.Editor.__executeSoapRequest(retrieveUnpublishedRequest, function (xml, textStatus, XmlHttpRequest) {
+            var webResource = {};
+            $(xml).find('c\\:value[i\\:type="a:Entity"]').find('a\\:KeyValuePairOfstringanyType').each(function () {
+                webResource[$(this).find('c\\:key').text()] = getValue($(this).find('c\\:value'));
+            });
+            Shrpr.Editor.createEditor(webResource);
+        });
+    },
+
+    __executeSoapRequest: function (requestContent, successFunction, errorFunction) {
+        $.ajax({
+            type: "POST",
+            contentType: "text/xml; charset=utf-8",
+            datatype: "xml",
+            data: requestContent,
+            url: GetGlobalContext().getServerUrl() + "/XRMServices/2011/Organization.svc/web",
+            beforeSend: function (xmlHttpRequest) {
+                xmlHttpRequest.setRequestHeader("Accept", "application/xml, text/xml, */*");
+                xmlHttpRequest.setRequestHeader("SOAPAction", "http://schemas.microsoft.com/xrm/2011/Contracts/Services/IOrganizationService/Execute");
+            },
+            success: successFunction,
+            error: !errorFunction ? errorFunction : function (xmlHttpRequest, textStatus, errorThrown) {
+                alert("Error:" + textStatus + " Detail: " + errorThrown);
+            }
+        });
+    },
+
+    __loadWebResourceRest:
+        function (wrId, context, onResourceLoaded) {
+
             //Asynchronous AJAX function to Retrieve a CRM record using OData
             $.ajax({
                 type: "GET",
@@ -172,9 +254,9 @@ Shrpr.Editor = {
 
         editor.installTextView();
         // if there is a mechanism to change which file is being viewed, this code would be run each time it changed.
-        var contentName = webResource.Name; // for example, a file name, something the user recognizes as the content.
+        var contentName = webResource.name; // for example, a file name, something the user recognizes as the content.
         var extension = "";
-        switch (webResource.WebResourceType.Value) {
+        switch (webResource.webresourcetype.Value) {
             case 1:
                 extension = "html";
                 break;
@@ -194,7 +276,7 @@ Shrpr.Editor = {
             contentName = contentName.replace(wrExtension, extension);
         }
 
-        var initialContent = base64.decode(webResource.Content);
+        var initialContent = base64.decode(webResource.content);
         initialContent = initialContent.replace("ï»¿", ""); // Remove ByteOrder Mark
         editor.onInputChange(contentName, null, initialContent);
         syntaxHighlighter.highlight(contentName, editor);
@@ -236,19 +318,8 @@ Shrpr.Editor = {
         publishRequest += "  </s:Body>";
         publishRequest += "</s:Envelope>";
 
-        $.ajax({
-            type: "POST",
-            contentType: "text/xml; charset=utf-8",
-            datatype: "xml",
-            data: publishRequest,
-            url: GetGlobalContext().getServerUrl() + "/XRMServices/2011/Organization.svc/web",
-            beforeSend: function (xmlHttpRequest) {
-                xmlHttpRequest.setRequestHeader("Accept", "application/xml, text/xml, */*");
-                xmlHttpRequest.setRequestHeader("SOAPAction", "http://schemas.microsoft.com/xrm/2011/Contracts/Services/IOrganizationService/Execute");
-            },
-            success: function (data, textStatus, XmlHttpRequest) {
-                Shrpr.Editor.onSaveAndPublished();
-            }
+        Shrpr.Editor.__executeSoapRequest(publishRequest, function (data, textStatus, XmlHttpRequest) {
+            Shrpr.Editor.onSaveAndPublished();
         });
     },
 
