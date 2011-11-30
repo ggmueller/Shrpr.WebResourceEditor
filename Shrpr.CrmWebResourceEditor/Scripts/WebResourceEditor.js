@@ -96,7 +96,7 @@ Shrpr.Editor = {
             $(xml).find('c\\:value[i\\:type="a:Entity"]').find('a\\:KeyValuePairOfstringanyType').each(function () {
                 webResource[$(this).find('c\\:key').text()] = getValue($(this).find('c\\:value'));
             });
-            Shrpr.Editor.createEditor(webResource);
+            Shrpr.Editor.createEditor(webResource, onResourceLoaded);
         });
     },
 
@@ -141,7 +141,7 @@ Shrpr.Editor = {
             });
 
         },
-    createEditor: function (webResource) {
+    createEditor: function (webResource, onResourceLoaded) {
         var editorDomNode = document.getElementById("editor");
 
         var textViewFactory = function () {
@@ -270,16 +270,13 @@ Shrpr.Editor = {
                 throw new Error("Only Html, Javascript and Css are supported for Shrpr.WebResourceEditor");
         }
 
-        var wrExtension = contentName.split('.').pop();
-
-        if (wrExtension != extension) {
-            contentName = contentName.replace(wrExtension, extension);
-        }
+        contentName = contentName + " | ." + extension;
 
         var initialContent = base64.decode(webResource.content);
         initialContent = initialContent.replace("ï»¿", ""); // Remove ByteOrder Mark
         editor.onInputChange(contentName, null, initialContent);
         syntaxHighlighter.highlight(contentName, editor);
+        onResourceLoaded(webResource, contentName);
         // end of code to run when content changes.
     },
 
