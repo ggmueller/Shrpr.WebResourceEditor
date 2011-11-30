@@ -1,3 +1,6 @@
 [submodule "Shrpr.CrmWebResourceEditor/Scripts/orion"]
 	path = Shrpr.CrmWebResourceEditor/Scripts/orion
 	url = git://git.eclipse.org/gitroot/orion/org.eclipse.orion.client.git
+[submodule "Shrpr.CrmWebResourceEditor/orion"]
+	path = Shrpr.CrmWebResourceEditor/orion
+	url = git://git.eclipse.org/gitroot/orion/org.eclipse.orion.client.git
