@@ -109,7 +109,8 @@
 		            $('#editor').html('<span class="error">' + e.toString() + '</span>');
 		        }
 
-		        $('#help').overlay({effect: 'apple'});
+		        $('#help').overlay();
+		        
 
 
 		    });
@@ -125,13 +126,13 @@
 			    
 			</div>
 		    <div class="action">
-                <span class="helpLink"><a id="help" rel="#helpOverlay">Help</a></span> <span class="helpLink"><a href="http://www.shrpr.org/p/shrpr-web-resource-editor.html" target="blank">About</a></span>
+                <span class="helpLink"><a id="help" rel="#helpOverlay">Help</a></span> <span class="helpLink"><a href="http://www.shrpr.org/p/shrpr-web-resource-editor.html" rel="#aboutOverlay" target="blank" id="about">About</a></span>
             </div>
 		</div>
 		<div id="editor" style="width: 100%; height: 90%"></div>
 		<div id="contentassist" class="contentassist"></div>
 		<div id="status"></div><div class="action"></div>
-        <div id="helpOverlay">
+        <div id="helpOverlay" class="overlay">
             
             <h1>Actions</h1>
             <h2>Save</h2>
@@ -142,7 +143,7 @@
             <p>Saves the Web Resource and publishes it.</p>
             <h1>Shortcuts</h1>
             <table>
-            <tr><th colspan="2">File Actions</th></tr>
+                        <tr><th colspan="2">File Actions</th></tr>
             <tr>
                 <td>CTRL + SHIFT + S</td> <td>Save</td>
             </tr>
@@ -152,6 +153,37 @@
             <tr>
                 <td>CTRL + S</td> <td>Save and Publish</td>
             </tr>
+            <tr><th colspan="2">Source Code Actions</th></tr>
+            <tr>
+                <td>CTRL + / (en-us)<br/>CTRL + # (de)</td> <td>Toggle Javascript Line Comment</td>
+            </tr>
+            <tr><th colspan="2">Text Actions</th></tr>
+            <tr>
+                <td>CTRL + L</td> <td>Goto Line ...</td>
+            </tr>
+            <tr>
+                <td>Shift + Del</td> <td>Delete Line</td>
+            </tr>
+            <tr>
+                <td>CTRL + D<br/>CTRL + ALT + Down</td> <td>Duplicate Line (Copy Down)</td>
+            </tr>            
+            <tr>
+                <td>CTRL + ALT + Up</td> <td>Copy Line Up</td>
+            </tr>
+            <tr>
+                <td>ALT + Down</td> <td>Move Line Down</td>
+            </tr>            
+            <tr>
+                <td>ALT + Up</td> <td>Move Line Up</td>
+            </tr>
+            
+            <tr>
+                <td>Tab</td> <td>Indent Line</td>
+            </tr>            
+            <tr>
+                <td>SHIFT + Tab</td> <td>Unindent Line</td>
+            </tr>
+            
             <tr><th colspan="2">Undo Actions</th></tr>
             <tr>
                 <td>CTRL + Z</td> <td>Undo</td>

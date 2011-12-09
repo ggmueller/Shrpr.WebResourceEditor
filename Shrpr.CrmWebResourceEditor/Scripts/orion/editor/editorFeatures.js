@@ -375,7 +375,8 @@ orion.editor.TextActions = (function() {
 				return true;
 			}.bind(this));
 			
-			this.textView.setKeyBinding(new orion.textview.KeyBinding(40, true, false, true), "Copy Lines Down");
+		    this.textView.setKeyBinding(new orion.textview.KeyBinding(40, true, false, true), "Copy Lines Down");
+			this.textView.setKeyBinding(new orion.textview.KeyBinding('d', true, false, false), "Copy Lines Down");
 			this.textView.setAction("Copy Lines Down", function() {
 				var editor = this.editor;
 				var model = editor.getModel();
@@ -396,7 +397,7 @@ orion.editor.TextActions = (function() {
 				return true;
 			}.bind(this));
 			
-			this.textView.setKeyBinding(new orion.textview.KeyBinding('d', true, false, false), "Delete Selected Lines");
+			this.textView.setKeyBinding(new orion.textview.KeyBinding(46, false, true, false), "Delete Selected Lines");
 			this.textView.setAction("Delete Selected Lines", function() {
 				var editor = this.editor;
 				var selection = editor.getSelection();

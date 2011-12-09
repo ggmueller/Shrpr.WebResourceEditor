@@ -39,34 +39,45 @@ a:hover {
 }
 
 #header {
-    background-image: url(images/Shrpr_WRE_Logo.png);
-    background-repeat: no-repeat;
-    background-color: #2f2e2e;
-    padding-left: 190px;
-    height: 78px;
+	background-image: url(images/Shrpr_WRE_Logo.png);
+	background-repeat: no-repeat;
+	background-color: #2f2e2e;
+	padding-left: 190px;
+	height: 78px;
 }
 
 .action {
-    padding-top: 10px;
-    text-align: right;
-    padding-right: 20px;
-    cursor: pointer;
+	padding-top: 10px;
+	text-align: right;
+	padding-right: 20px;
+	cursor: pointer;
 }
 
-#helpOverlay {
-    display: none;
-    z-index: 10000;
-    
-/* styling */
-    background-image: url(images/overlay/overlay.png);
+.overlay {
+	display: none;
+	z-index: 10000;
+
+	background-color: rgba(0, 0, 0, 0.75);
 	
 	width:675px;	
 	min-height:200px;
 	
-    padding: 35px;
+	padding: 35px;
 
-    color: rgb(207, 207, 207);
+	color: rgb(207, 207, 207);
 
+}
+
+#helpOverlay table td {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+#helpOverlay table th {
+    padding-top: 12px;
+    padding-bottom: 6px;
+    text-align: left;
+    font-weight: bold;
 }
 
 #helpOverlay .close {
@@ -78,6 +89,6 @@ a:hover {
 }
 
 .helpLink {
-    padding-left: 5px;
-    padding-right: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
 }
