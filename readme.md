@@ -16,7 +16,7 @@ The Shrpr Web Resource Editor is licensed under [Apache 2.0 License](http://www.
 
 ##Version 0.3
 * **New Feature**: Help now displays a short help describing the File Actions and the available shortcuts
-* ** New Feature**: Shortcuts for Save And Publish, Save And Close and Save
+* **New Feature**: Shortcuts for Save And Publish, Save And Close and Save
 * **Improvement**: The resources type is now identified by the resourcetype field of the webresource, closing #5
 * Fixed issue where the documents title was the URL instead of the WebResource content name
 
