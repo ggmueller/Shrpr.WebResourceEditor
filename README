@@ -9,6 +9,9 @@ When opening a Webresource using Shrpr WRE you get:
 * Brace Matching
 * and several other benefits (for details see the [webpage](http://www.shrpr.org/p/shrpr-web-resource-editor.html))
 
+#License
+The Shrpr Web Resource Editor is licensed under [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0)
+
 #Changelog
 
 ##Version 0.3

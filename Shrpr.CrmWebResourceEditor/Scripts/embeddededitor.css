@@ -47,5 +47,37 @@ a:hover {
 }
 
 .action {
-    text-align: right
+    padding-top: 10px;
+    text-align: right;
+    padding-right: 20px;
+    cursor: pointer;
+}
+
+#helpOverlay {
+    display: none;
+    z-index: 10000;
+    
+/* styling */
+    background-image: url(images/overlay/overlay.png);
+	
+	width:675px;	
+	min-height:200px;
+	
+    padding: 35px;
+
+    color: rgb(207, 207, 207);
+
+}
+
+#helpOverlay .close {
+	background-image:url(images/overlay/close.png);
+	position:absolute; right:14px; top:17px;
+	cursor:pointer;
+	height:28px;
+	width:28px;
+}
+
+.helpLink {
+    padding-left: 5px;
+    padding-right: 5px;
 }
