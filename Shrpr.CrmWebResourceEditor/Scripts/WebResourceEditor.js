@@ -27,7 +27,16 @@ Shrpr.Editor = {
     __editor: {},
 
     getWrId: function () {
-        return window.opener.Xrm.Page.context.getQueryStringParameters()['id'].replace("{", "").replace("}", "");
+        var idElements = window.opener.document.getElementsByName('id');
+        if (idElements.length > 0 && idElements[0].value) {
+            return idElements[0].value.replace("{", "").replace("}", "");
+        }
+        var idParam = window.opener.Xrm.Page.context.getQueryStringParameters()['id'];
+        if (idParam) {
+            return idParam.replace("{", "").replace("}", "");
+        }
+        throw new Error("WebResourceId cannot be determined from the window the opener of the Editor." +
+            "Either the hidden field, or the Query String Parameter id must exist in the window that opened the editor");
     },
     isEditable: function () {
         return GetGlobalContext().getQueryStringParameters()['Data'] == "Editable";
@@ -39,7 +48,13 @@ Shrpr.Editor = {
     loadWebResource: function (onResourceLoaded) {
         var context = GetGlobalContext();
         var wrId = Shrpr.Editor.getWrId();
-        Shrpr.Editor.__loadWebResourceSoap(wrId, context, onResourceLoaded);
+        if (wrId) {
+            Shrpr.Editor.__loadWebResourceSoap(wrId, context, onResourceLoaded);
+            return true;
+        }
+        else {
+            return false;
+        }
     },
 
     __loadWebResourceSoap: function (webResourceId, clientContext, onResourceLoaded) {
@@ -207,9 +222,23 @@ Shrpr.Editor = {
             keyModeStack.push(codeBindings);
 
             // save binding
-            editor.getTextView().setKeyBinding(new orion.textview.KeyBinding("s", true), "save");
+            editor.getTextView().setKeyBinding(new orion.textview.KeyBinding("s", true, true), "save");
             editor.getTextView().setAction("save", function () {
                 Shrpr.Editor.save();
+                return true;
+            });
+
+            // saveAndClose binding
+            editor.getTextView().setKeyBinding(new orion.textview.KeyBinding("s", true, false, true), "saveAndClose");
+            editor.getTextView().setAction("saveAndClose", function () {
+                Shrpr.Editor.saveAndClose();
+                return true;
+            });
+
+            // saveAndPublish binding
+            editor.getTextView().setKeyBinding(new orion.textview.KeyBinding("s", true), "saveAndPublish");
+            editor.getTextView().setAction("saveAndPublish", function () {
+                Shrpr.Editor.saveAndPublish();
                 return true;
             });
 
